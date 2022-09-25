@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable
 import springfox.documentation.builders.ApiInfoBuilder
 import springfox.documentation.builders.PathSelectors
 import springfox.documentation.builders.RequestHandlerSelectors
-import springfox.documentation.schema.AlternateTypeRules
 import springfox.documentation.service.*
 import springfox.documentation.spi.DocumentationType
 import springfox.documentation.spi.service.contexts.SecurityContext
@@ -20,15 +19,12 @@ class SwaggerConfig {
     @Bean
     fun api(): Docket? {
         return Docket(DocumentationType.OAS_30)
-            .alternateTypeRules(
-                AlternateTypeRules
-                    .newRule(Pageable::class.java, Page::class.java)
-            )
             .useDefaultResponseMessages(false)
             .select()
             .apis(RequestHandlerSelectors.any())
             .paths(PathSelectors.any())
             .build()
+            .directModelSubstitute(Pageable::class.java,Page::class.java)
             .apiInfo(apiInfo()).securityContexts(listOf(securityContext()))
             .securitySchemes(listOf(apiKey()) as List<SecurityScheme>?)
     }
@@ -58,8 +54,7 @@ class SwaggerConfig {
             .build()
 
     @ApiModel
-    internal class Page {
+    data class Page(
         @ApiModelProperty(value = "페이지번호")
-        private val page: Int? = null
-    }
+        val page: Int?)
 }

@@ -2,6 +2,9 @@ package com.example.demo.controller
 
 import com.example.demo.domain.Notice
 import com.example.demo.service.NoticeService
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PageableDefault
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDateTime
 
@@ -9,8 +12,8 @@ import java.time.LocalDateTime
 class NoticeController(private val noticeService: NoticeService) {
 
     @GetMapping("/notices")
-    fun getALL() =
-        noticeService.getNotices()
+    fun getALL(@PageableDefault(size = 5) pageable: Pageable) =
+        noticeService.getNotices(pageable)
 
     @GetMapping("/notices/{title}")
     fun getByTitle(@PathVariable("title") title: String) =
