@@ -1,0 +1,11 @@
+spring:
+  data:
+    mogodb:
+      host: localhost
+      port: 27017
+      database: test
+logging:
+  level:
+    com.example: debug
+    org.springframework.web.reactive.function.client.ExchangeFunctions: DEBUG
+    org.springframework.data.mongodb: DEBUG
